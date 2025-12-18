@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=postgre
+      - POSTGRES_PASSWORD=stkygre4
+      - POSTGRES_DB=weatherdb
+    ports:
+      - "5434:5432"
+
+  airflow-webserver:
+    image: apache/airflow:2.7.1
+    command: webserver          # <-- TAMBAHAN: Perintah untuk menjalankan mode UI
+    environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgre:stkygre4@postgres:5432/weatherdb  # Masukkan string tadi di sini
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor  # Kita pakai executor lokal yang simpel
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    volumes:
+      - ./dags:/opt/airflow/dags                                    # Coba isi mapping folder dags di sini
+    ports:
+      - "8080:8080"                                    # Mapping port 8080
+    depends_on:
+      - postgres                               # Pastikan DB nyala duluan sebelum Airflow
+
+  airflow-scheduler:
+    image: apache/airflow:2.7.1
+    command: scheduler          # <-- TAMBAHAN: Perintah untuk menjalankan mode UI
+    environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgre:stkygre4@postgres:5432/weatherdb  # Masukkan string tadi di sini
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor  # Kita pakai executor lokal yang simpel
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    volumes:
+      - ./dags:/opt/airflow/dags                                    # Coba isi mapping folder dags di sini
+    depends_on:
+      - postgres
