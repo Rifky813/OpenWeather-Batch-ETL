@@ -9,6 +9,6 @@ CREATE TABLE IF NOT EXISTS weather_data (
     pressure INTEGER,
     humidity INTEGER,
     wind_speed FLOAT,
-    timezone TIMESTAMP,
+    timestamp TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

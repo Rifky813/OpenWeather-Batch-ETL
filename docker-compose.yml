@@ -12,26 +12,40 @@ services:
 
   airflow-webserver:
     image: apache/airflow:2.7.1
-    command: webserver          # <-- TAMBAHAN: Perintah untuk menjalankan mode UI
+    command: webserver
+    env_file: .env                                 
     environment:
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgre:stkygre4@postgres:5432/weatherdb  # Masukkan string tadi di sini
-      - AIRFLOW__CORE__EXECUTOR=LocalExecutor  # Kita pakai executor lokal yang simpel
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor  
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__WEBSERVER__SECRET_KEY=kunci123
     volumes:
-      - ./dags:/opt/airflow/dags                                    # Coba isi mapping folder dags di sini
+      - ./dags:/opt/airflow/dags    
+      - ./src:/opt/airflow/src
+      - ./data:/opt/airflow/data
+      - ./logs:/opt/airflow/logs
+      - ./sql:/opt/airflow/sql
+      - ./postgres_data:/var/lib/postgresql/data                            
     ports:
-      - "8080:8080"                                    # Mapping port 8080
+      - "8080:8080"
     depends_on:
-      - postgres                               # Pastikan DB nyala duluan sebelum Airflow
+      - postgres
 
   airflow-scheduler:
     image: apache/airflow:2.7.1
-    command: scheduler          # <-- TAMBAHAN: Perintah untuk menjalankan mode UI
+    command: scheduler
+    env_file: .env                                      
     environment:
-      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgre:stkygre4@postgres:5432/weatherdb  # Masukkan string tadi di sini
-      - AIRFLOW__CORE__EXECUTOR=LocalExecutor  # Kita pakai executor lokal yang simpel
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgre:stkygre4@postgres:5432/weatherdb  
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor  
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__WEBSERVER__SECRET_KEY=kunci123
     volumes:
-      - ./dags:/opt/airflow/dags                                    # Coba isi mapping folder dags di sini
+      - ./dags:/opt/airflow/dags
+      - ./src:/opt/airflow/src
+      - ./data:/opt/airflow/data
+      - ./logs:/opt/airflow/logs
+      - ./sql:/opt/airflow/sql
+      - ./postgres_data:/var/lib/postgresql/data
     depends_on:
       - postgres

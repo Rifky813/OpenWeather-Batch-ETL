@@ -17,7 +17,7 @@ def transform_weather_data(raw_data):
         'pressure': raw_data['main'].get('pressure'),
         'humidity': raw_data['main'].get('humidity'),
         'wind_speed': raw_data['wind'].get('speed'),
-        'timezone': datetime.fromtimestamp(raw_data.get('timezone')).strftime('%d-%m-%Y %H:%M:%S')
+        'timestamp': datetime.fromtimestamp(raw_data.get('dt')).strftime('%Y-%m-%d %H:%M:%S')
     }
 
     return transformed
