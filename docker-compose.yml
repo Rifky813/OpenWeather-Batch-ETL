@@ -11,7 +11,7 @@ services:
       - "5434:5432"
 
   airflow-webserver:
-    image: apache/airflow:2.7.1
+    image: .
     command: webserver
     env_file: .env                                 
     environment:
@@ -32,7 +32,7 @@ services:
       - postgres
 
   airflow-scheduler:
-    image: apache/airflow:2.7.1
+    image: .
     command: scheduler
     env_file: .env                                      
     environment:
