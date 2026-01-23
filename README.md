@@ -5,6 +5,7 @@ Automated ETL pipeline to extract weather data from OpenWeatherMap, transform it
 ## Architecture
 **Extract** (API) ➔ **Transform** (Pandas) ➔ **Load** (PostgreSQL)
 *(Scheduled with Airflow)*
+
 ![OpenWeather_Architecture](https://github.com/user-attachments/assets/0d41f3de-3640-4329-a662-b397473b648e)
 
 
